@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import Like from "./common/like";
+import Pagination from "./pagination";
+import { paginate } from "../utils/paginate";
 
 class Movies extends Component {
 	state = {
 		movies: getMovies(),
+		pageSize: 4,
+		currentPage: 1,
 	};
 
 	handleLike = (movie) => {
 		const movies = [...this.state.movies];
 		const index = movies.indexOf(movie);
-		movies[index] = { ...movie };
+		movies[index] = { ...movies[index] };
 		movies[index].liked = !movies[index].liked;
 		this.setState({ movies });
 	};
@@ -22,13 +26,21 @@ class Movies extends Component {
 		});
 	};
 
+	handlePageChange = (page) => {
+		this.setState({ currentPage: page });
+	};
+
 	render() {
-		if (this.moviesCount() === 0)
-			return <p>There are no movies in the database</p>;
+		const { length: count } = this.state.movies;
+		const { pageSize, currentPage } = this.state;
+
+		if (count === 0) return <p>There are no movies in the database</p>;
+		// Create the movies copy locally to be used by the render method if the length is greater than 0 using the paginate function
+		const movies = paginate(this.state.movies, currentPage, pageSize);
 
 		return (
-			<div>
-				<p>Showing {this.moviesCount()} movies in the database</p>
+			<React.Fragment>
+				<p>Showing {count} movies in the database</p>
 				<table className="table">
 					<thead>
 						<tr>
@@ -42,7 +54,7 @@ class Movies extends Component {
 					</thead>
 
 					<tbody>
-						{this.state.movies.map((movie) => (
+						{movies.map((movie) => (
 							<tr key={movie._id}>
 								<td>{movie.title}</td>
 								<td>{movie.genre.name}</td>
@@ -50,7 +62,7 @@ class Movies extends Component {
 								<td>{movie.dailyRentalRate}</td>
 								<td>
 									<Like
-										onClick={() => this.handleLike(movie)}
+										onLikeToggle={() => this.handleLike(movie)}
 										liked={movie.liked}
 									/>
 								</td>
@@ -67,12 +79,15 @@ class Movies extends Component {
 						))}
 					</tbody>
 				</table>
-			</div>
+				<Pagination
+					itemsCount={count}
+					pageSize={pageSize}
+					currentPage={currentPage}
+					onPageChange={this.handlePageChange}
+				/>
+			</React.Fragment>
 		);
 	}
-	moviesCount = () => {
-		return this.state.movies.length;
-	};
 }
 
 export default Movies;
