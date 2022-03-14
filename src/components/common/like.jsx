@@ -6,11 +6,14 @@ import propTypes from "prop-types";
 // Output: onClick
 
 const Like = (props) => {
+	const { liked, onLikeToggle } = props;
+
 	let classes = "fa fa-heart";
-	classes += !props.liked ? "-o" : "";
+	classes += !liked ? "-o" : "";
+
 	return (
 		<i
-			onClick={props.onLikeToggle}
+			onClick={onLikeToggle}
 			style={{ cursor: "pointer" }}
 			className={classes}
 		></i>

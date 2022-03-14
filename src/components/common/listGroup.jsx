@@ -7,9 +7,6 @@ const ListGroup = (props) => {
 
 	return (
 		<ul className="list-group">
-			{/* <li className="list-group-item active" style={{ cursor: "pointer" }}>
-				All Genres
-			</li> */}
 			{items.map((item) => (
 				<li
 					key={item[valueProperty]}
@@ -28,8 +25,8 @@ const ListGroup = (props) => {
 
 // We set the default values for the the movie(parent)component props here so to have the ListGroup component clean when using in the parent and easily overriden by changing the value of the keys in other component
 ListGroup.defaultProps = {
-	textProperty: "name",
 	valueProperty: "_id",
+	textProperty: "name",
 };
 
 export default ListGroup;
