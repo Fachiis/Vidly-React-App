@@ -12,9 +12,10 @@ const ListGroup = (props) => {
 					key={item[valueProperty]}
 					onClick={() => onItemSelect(item)}
 					className={
-						selectedItem === item ? "list-group-item active" : "list-group-item"
+						selectedItem === item
+							? "list-group-item clickable active"
+							: "list-group-item clickable"
 					}
-					style={{ cursor: "pointer" }}
 				>
 					{item[textProperty]}
 				</li>

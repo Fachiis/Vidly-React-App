@@ -12,7 +12,7 @@ class Movies extends Component {
 	state = {
 		movies: [],
 		genres: [],
-		sortColumn: { column: "title", order: "asc" },
+		sortColumn: { path: "title", order: "asc" },
 		pageSize: 4,
 		currentPage: 1,
 	};
@@ -77,7 +77,7 @@ class Movies extends Component {
 
 		const sortedMovies = _.orderBy(
 			filteredMovies,
-			[sortColumn.column],
+			[sortColumn.path],
 			[sortColumn.order]
 		);
 		const movies = paginate(sortedMovies, currentPage, pageSize);
