@@ -14,8 +14,7 @@ const Like = (props) => {
 	return (
 		<i
 			onClick={onLikeToggle}
-			style={{ cursor: "pointer" }}
-			className={classes}
+		className={`${classes} + clickable`}
 		></i>
 	);
 };
