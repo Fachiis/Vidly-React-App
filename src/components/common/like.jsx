@@ -11,12 +11,7 @@ const Like = (props) => {
 	let classes = "fa fa-heart";
 	classes += !liked ? "-o" : "";
 
-	return (
-		<i
-			onClick={onLikeToggle}
-		className={`${classes} + clickable`}
-		></i>
-	);
+	return <i onClick={onLikeToggle} className={`${classes} + clickable`}></i>;
 };
 
 // Type Checking with propTypes is very important especially when using reusable components.
