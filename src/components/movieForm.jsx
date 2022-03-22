@@ -1,17 +1,81 @@
+import Joi from "joi-browser";
 import React from "react";
 
-const MovieForm = ({ match, history }) => {
-	return (
-		<React.Fragment>
-			<h1>Movie Form {match.params.id}</h1>
-			<button
-				className="btn btn-primary btn-sm"
-				onClick={() => history.push("/movies")}
-			>
-				Save
-			</button>
-		</React.Fragment>
-	);
-};
+import Form from "./common/form";
+import { getGenres } from "../services/fakeGenreService";
+import { saveMovie, getMovie } from "../services/fakeMovieService";
+class MovieForm extends Form {
+	state = {
+		data: {
+			title: "",
+			genreId: "",
+			numberInStock: "",
+			dailyRentalRate: "",
+		},
+		genres: [],
+		errors: {},
+	};
+
+	schema = {
+		_id: Joi.string(),
+		title: Joi.string().required().label("Title"),
+		genreId: Joi.string().required().label("Genre"),
+		numberInStock: Joi.number()
+			.min(0)
+			.max(100)
+			.required()
+			.label("NumberInStock"),
+		dailyRentalRate: Joi.number()
+			.min(0)
+			.max(10)
+			.required()
+			.label("DailyRentalRate"),
+	};
+
+	componentDidMount() {
+		const genres = getGenres();
+		this.setState({ genres });
+
+		const movieId = this.props.match.params.id;
+		console.log(movieId)
+		if (movieId === "new") return;
+
+		const movie = getMovie(movieId);
+		if (!movie) return this.props.history.replace("/not-found");
+
+		this.setState({ data: this.mapToModelView(movie) });
+	}
+
+	mapToModelView = (movie) => {
+		return {
+			_id: movie._id,
+			title: movie.title,
+			genreId: movie.genre._id,
+			numberInStock: movie.numberInStock,
+			dailyRentalRate: movie.dailyRentalRate,
+		};
+	};
+
+	doSubmit = () => {
+		// Make server call
+		saveMovie(this.state.data);
+		this.props.history.push("/movies");
+	};
+
+	render() {
+		return (
+			<div>
+				<h1>Movie Form</h1>
+				<form onSubmit={this.handleSubmit}>
+					{this.renderInput("title", "Title")}
+					{this.renderSelect("genreId", "Genre", this.state.genres)}
+					{this.renderInput("numberInStock", "Number in Stock", "number")}
+					{this.renderInput("dailyRentalRate", "Rate")}
+					{this.renderButton("Save")}
+				</form>
+			</div>
+		);
+	}
+}
 
 export default MovieForm;

@@ -11,3 +11,7 @@ body {
 .clickable {
 	cursor: pointer;
 }
+
+.new-movie {
+	margin-bottom: 20px;
+}

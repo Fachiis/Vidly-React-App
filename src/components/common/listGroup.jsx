@@ -1,7 +1,7 @@
 import React from "react";
 
 const ListGroup = (props) => {
-	// To completely decouple the ListGroup from the movie component, we dynamically call the textProperty and valueProperty whoms default values is set.
+	// To completely decouple the ListGroup from the movie component, we dynamically call the textProperty and valueProperty whom default values is set.
 	const { items, textProperty, valueProperty, onItemSelect, selectedItem } =
 		props;
 
