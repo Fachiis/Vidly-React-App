@@ -44,8 +44,8 @@ class MovieForm extends Form {
 
 			const { data: movie } = await getMovie(movieId);
 			this.setState({ data: this.mapToModelView(movie) });
-		} catch (error) {
-			if (error.response && error.response.status === 404)
+		} catch (ex) {
+			if (ex.response && ex.response.status === 404)
 				this.props.history.replace("/not-found");
 		}
 	}

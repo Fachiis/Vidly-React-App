@@ -1,6 +1,10 @@
 import axios from "axios";
 import logger from "../services/logService";
 import { toast } from "react-toastify";
+import auth from "./authService";
+
+// Pass the jwt token to the axios header on each request to the server
+axios.defaults.headers.common["x-auth-token"] = auth.getCurrentJwt();
 
 axios.interceptors.response.use(null, (error) => {
 	const expectedError =
