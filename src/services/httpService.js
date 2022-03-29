@@ -1,10 +1,6 @@
 import axios from "axios";
 import logger from "../services/logService";
 import { toast } from "react-toastify";
-import auth from "./authService";
-
-// Pass the jwt token to the axios header on each request to the server
-axios.defaults.headers.common["x-auth-token"] = auth.getCurrentJwt();
 
 axios.interceptors.response.use(null, (error) => {
 	const expectedError =
@@ -21,9 +17,15 @@ axios.interceptors.response.use(null, (error) => {
 	return Promise.reject(error);
 });
 
+// Pass the jwt token to the axios header on each request to the server
+export function setJwt(jwt) {
+	axios.defaults.headers.common["x-auth-token"] = jwt;
+}
+
 export default {
 	get: axios.get,
 	post: axios.post,
 	put: axios.put,
 	delete: axios.delete,
+	setJwt,
 };
